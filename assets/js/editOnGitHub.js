@@ -5,7 +5,7 @@
   function main(hook, vm) {
     hook.beforeEach(function (html) {
       const fileUrl = repoFileLink + vm.route.file;
-      const editHtml = "[:memo: EDIT DOCUMENT](" + fileUrl + ")\n";
+      const editHtml = "[:memo: EDIT DOCUMENT](" + fileUrl + ")\n\n";
       return editHtml + html;
     });
   }
