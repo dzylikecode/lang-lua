@@ -12,7 +12,7 @@ x,y = foo2(), 20      -- x='a', y=20
 
 Technically speaking, what is a value in Lua is the closure, not the function. The function itself is just a prototype for closures.
 
-> 相当于`类的私有变量`的概念
+> 相当于`类的私有变量`的概念, 可以用来构造类, prototype 设计
 
 ## local
 
