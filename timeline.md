@@ -6,6 +6,9 @@
 
 - 3/7 = [菜鸟](https://www.runoob.com/lua/lua-tutorial.html)
 
+  [Lua 元表(Metatable)](https://www.runoob.com/lua/lua-metatables.html)
+
   only one day
 
-  [Lua 元表(Metatable)](https://www.runoob.com/lua/lua-metatables.html)
+  - [ ] [Lua 协同程序](https://blog.csdn.net/banfushen007/article/details/89349849)
+  - [ ] [Lua 协同程序(coroutine)](https://www.runoob.com/lua/lua-coroutine.html)
