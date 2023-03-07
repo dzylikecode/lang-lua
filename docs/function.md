@@ -98,7 +98,23 @@ function room4 ()
 end
 ```
 
-## 可变参数函数
+![](assets/2023-03-07-11-05-27.png)
+
+## 可变参数
+
+```lua
+function average(...)
+   result = 0
+   local arg={...}
+   for i,v in ipairs(arg) do
+      result = result + v
+   end
+   print("总共传入 " .. #arg .. " 个数")
+   return result/#arg
+end
+```
+
+Lua 将函数的参数放在 `arg` 的表中，`#arg` 表示传入参数的个数。
 
 ```lua
 function fun(fmt,...)  --固定参数在前，可变参数放最后
