@@ -15,6 +15,45 @@ end
 
 `list_iter` is the factory
 
+```lua
+for var_1, ..., var_n in explist
+  do
+    block
+  end
+```
+
+```lua
+do
+  local _f, _s, _var = explist
+  while true do
+    local var_1, ... , var_n = _f(_s, _var)
+    _var = var_1
+    if _var == nil then break end
+    block
+  end
+end
+```
+
+?> 闭包相当于构造类
+
+```python
+next, obj, i = list_iter(t) # i: state
+while True
+    i = next(obj, i) # update state
+    if i == None:
+        break
+    block()
+```
+
+```python
+obj, i = list_iter(t) # next, obj 可以合并为 obj
+while True
+    i = obj.next(i) # update state
+    if i == None:
+        break
+    block()
+```
+
 ## 无状态的迭代器
 
 用两个变量（状态常量和控制变量）的值作为参数被调用
