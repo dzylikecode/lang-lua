@@ -25,7 +25,7 @@
 ## overload operator
 
 | method       | operator |
-| ------------ | -------- |
+|:------------:|:--------:|
 | `__add`      | a `+` b  |
 | `__sub`      | a `-` b  |
 | `__mul`      | a `*` b  |
