@@ -14,6 +14,37 @@ Technically speaking, what is a value in Lua is the closure, not the function. T
 
 > 相当于`类的私有变量`的概念, 可以用来构造类, prototype 设计
 
+一个函数内部嵌套另一个函数定义时，内部的函数体可以访问外部的函数的局部变量。并且可以把局部的函数传递出去，并且在外部对函数内部的东西进行修改。
+
+但如果进行重新调用返回出来的又是另一个环境。
+
+```lua
+local function fun(a, b)
+    local x = 0;
+    return function()
+        print(a, b, x);
+        x = x + 1;
+    end
+end
+
+fun(1, 2);
+
+local env1 = fun(1, 2); -- 此处是传参，没有进行函数调用
+env1();                 --x = 0
+env1();                 --x = 1
+env1();                 --x = 2
+
+local env2 = fun(1, 2);
+env2(); --x = 0
+
+env2(); --x = 1
+
+local env2_copy = env2;
+env2_copy(); --x = 2
+```
+
+lambda表达式，经典的闭包表现方式。 
+
 ## local
 
 ```lua
@@ -63,7 +94,7 @@ end
 
 A subtle point when we use proper tail calls is what is a tail call.
 
-As such, a quite useful application of proper tail calls in Lua is for programming state machines. Such applications can represent each state by a function; to change state is to go to (or to call) a specific function.
+As such, a quite useful application of proper tail calls in Lua is for programming state machines. **Such applications can represent each state by a function; to change state is to go to (or to call) a specific function.**
 
 ```lua
 function room1 ()
@@ -132,3 +163,27 @@ end
   - `select(n, …) `用于返回从起点 **n** 开始到结束位置的所有参数列表。
   
   > select返回的是元组而不是table
+  
+  - 获取第i个参数的方法`arg[i] = (select("#",i))`
+
+- 使用pack处理可变参
+  
+  ```lua
+  --将可变参打包为一个table，在最后会多出一个key为n的键值对，其值为参数的个数
+  table.pack(...)
+  arg_count = table.pack(...).n
+  --如果不需要知道参数个数，可以直接使用for进行遍历结课
+  local function fun1(...)
+      for i, v in ipairs { ... } do
+          print(i, v);
+      end
+  end
+  --使用unpack可以将table解包,i和j表示获取那几个值
+  table.unpack(table,i,j);
+  ```
+
+## 函数返回值
+
+- 可以返回局部变量值，并且拥有原本的块环境
+
+- 可以返回函数，可以是局部函数，全局函数，或者匿名函数都可以，返回函数变量具有原本return时的环境。
