@@ -3,7 +3,7 @@
 - [data](docs/data.md)
 - [basic-grammar](docs/basic-grammar.md)
 - [function](docs/function.md)
-- [iterator](docs/iterator.md)
+- [iterator](docs/iteration.md)
 - [meta](docs/meta.md)
 - [Object-Oriented](docs/Object-Oriented.md)
 - [coroutine](docs/coroutine.md)
