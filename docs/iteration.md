@@ -1,5 +1,7 @@
 # iteration
 
+> 迭代器的定义：迭代器(iterator)有时又称光标(cursor)是程序设计的软件设计模式，可在容器对象(container,例如链表或数组)上遍访的接口，设计人员无需关心容器对象的内存分配的实现细节。
+
 the closure and a factory
 
 ```lua
