@@ -1,4 +1,5 @@
 - <a class="Pages" target="_blank" href="/book/lua-programming.pdf">lua book</a>
+- [快速入土](docs/hin/lua.md)
 - [env](docs/env.md)
 - [data](docs/data.md)
 - [basic-grammar](docs/basic-grammar.md)
