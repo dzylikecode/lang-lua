@@ -164,3 +164,56 @@ f()  -- 真正打开库
       3. 把你需要的函数或者 packages 声明为 local：
          
          ![](assets/2023-03-08-01-56-31-image.png)
+
+## 包管理
+
+- 寻找包时是通过文件名进行寻找的
+
+- 为了避免同名时覆盖，避免在包中使用全局方法，或者说不进行返回
+
+- 在包中将table声明为local，最后将table进行return，可以进行多个table返回，封装在一个table中即可，return两个table只能接受第一个table，第二个参数会变成模块的文件路径，example如下：
+  
+  ```lua
+  -- 文件名为 mypackage.lua
+  -- 定义一个名为 module 的模块
+  local mypackage = {};
+  local test = {name = "test"};
+  -- 定义一个常量
+  mypackage.constant = "这是一个常量"
+  
+  -- 定义一个函数
+  function mypackage.func1()
+      io.write("这是一个公有函数！\n")
+  end
+  
+  local function func2()  --仅供文件内部调用
+      print("这是一个私有函数！")
+  end
+  
+  function mypackage.func3()
+      func2()
+  end
+  
+  return mypackage,test;
+  
+  --使用mypackage.lua
+  local m,t = require("mypackage");
+  --table: 0x55e4cfb58500 /home/yong/ws/example_lua/mypackage.lua
+  print(m,t); 
+  m.func1();
+  m.func3();
+  ```
+
+- 使用require ("package_path");时使用一个局部变量进行接收
+  
+  `local module = require("package_path")`,使用`module.func()`对模块进行使用可以避免与本文件重名的覆盖问题
+  
+  > 包路径正确但不一定能使用，需要package.path中有这个路径，二者同时满足才可以
+  
+  `print(package.path);``print(package.cpath);`找lua源文件和so库
+  
+  `package.path=package.path..";/tmp/?.Lua";`将/tmp/?.lua添加到包寻找路径下
+
+- 当需要多文件管理时，可以使用package.path查看包寻找路径
+
+- 不能互相require，会导致无限展开，死循环，Stack Overflow
