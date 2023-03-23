@@ -267,3 +267,43 @@ end
   ---字符转ASCII,默认只转一个
   string.byte(str,start,end)
   ```
+
+## 全局环境变量和环境隔离
+
+- 在lua的标准库中，所有内容都有一个隐式的前缀`_G`，`_G`就是lua中的全局环境变量
+
+- `_G`是影响全局的，一改就影响全局
+
+- 可以指定特有的环境变量,load中运行的code只能使用环境变量中的_G.print
+  
+  ```lua
+  --指定只能使用_G.print
+  local function box(code)
+      local rs, msg = load(code, "error_code", "bt", { print = _G.print });
+      return pcall(rs);
+  end
+  
+  local str = "print('123');";
+  box(str);
+  ```
+
+- 指定函数中的环境变量
+  
+  ```lua
+  local function env()
+    local _ENV = { print = _G.print };
+    print(os); --nil
+    print(print);
+  end
+  
+  --之前的版本
+  local function preEnv()
+      setfenv(1,{ print = _G.print });
+      print(os); --nil
+      print(print);
+  end
+  ```
+
+```
+
+```

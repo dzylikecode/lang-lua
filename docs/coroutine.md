@@ -18,3 +18,104 @@ Lua 协同程序(coroutine)与线程比较类似：拥有独立的堆栈，独�
 | coroutine.status()  | 查看 coroutine 的状态注：coroutine 的状态有三种：dead，suspended，running，具体什么时候有这样的状态请参考下面的程序 |
 | coroutine.wrap（）    | 创建 coroutine，返回一个函数，一旦你调用这个函数，就进入 coroutine，和 create 功能重复                      |
 | coroutine.running() | 返回正在跑的 coroutine，一个 coroutine 就是一个线程，当使用 running 的时候，就是返回一个 coroutine 的线程号     |
+
+## 一般使用
+
+- 使用`cor_handle = coroutine.create(function)`创建协程，返回协程句柄
+
+- 使用`coroutine.status(cor_handle)`查看协程的状态，返回值为协程的状态(string)
+
+- 使用`coroutine.resume(cor_handle,arg1,arg2,...)`启动挂起的协程，第一次启动会将参数传给`function`，成功调用第一个返回值为true，在又被挂起时，会返回true并且返回`coroutine.yield(...)`中的参数`...`
+
+- 调用`coroutine.yield(arg1,...)`将协程挂起，右边的返回值的位置是用于接受下次`coroutine.resume(cor_handle,...)`传进来的参数的`...`可用于后面的程序。
+
+> 关键是理解`coroutine.resume`和`coroutine.yield`的传参和返回值的作用
+
+```lua
+local function cor(a,b)
+    print("cor start");
+    local x,y,z = coroutine.yield(a,b,"first_yield");--返回true aa bb first_yield
+    print(x,y,z); --打印出"xx","yy","zz"
+end
+
+local cor_handle = coroutine.create(cor);
+
+print(coroutine.status(cor_handle));
+
+print(coroutine.resume(cor_handle,"aa","bb"));
+
+print(coroutine.status(cor_handle));--suspended
+
+print(coroutine.resume(cor_handle,"xx","yy","zz"));--调用会将参数传给x，y，z，结束时打印true
+
+print(coroutine.status(cor_handle));
+```
+
+- 使用协程实现双循环
+  
+  ```lua
+  ----------------------------------------------
+  --使用协程实现双循环
+  local function sleep(s)
+      local now = os.clock();
+      while now + s >= os.clock() do
+      end 
+  end
+  
+  local function fun1()
+      while true do
+          local rs = coroutine.resume(Co_handle2);
+          print("fun1");
+          sleep(1);
+      end
+  end
+  
+  
+  local function fun2()
+      while true do
+          coroutine.yield();
+          print("fun2");
+          sleep(1);
+      end
+  end
+  
+  Co_handle1 = coroutine.create(fun1);
+  Co_handle2 = coroutine.create(fun2);
+  
+  coroutine.resume(Co_handle1);
+  ```
+
+- 简单的生产者消费者模型实现
+  
+  ```lua
+  --只能一生产一消费
+  local function sleep(s)
+      local now = os.clock();
+      while now + s >= os.clock() do
+      end 
+  end
+  
+  local function produce()
+      local i = 0;
+      while true do
+          i = i + 1;
+          print("product")
+          print(coroutine.status(consumerHandle));
+          coroutine.yield(i); --当consumer唤醒produceHandle时就会收到i进行消费，可以借此传输产品,并将cpu让出
+      end
+  end
+  
+  local function consumer()
+      while true do
+          --在一个协程启动另一个协程会将本协程挂起,本协程释放cup给produceHandle运行，处于normal状态，即活跃但是不运行
+          local flag,i = coroutine.resume(produceHandle);--请求生产者生产，同时返回yield中的参数i
+          print(flag,i);
+          sleep(2);
+      end
+  end
+  
+  produceHandle = coroutine.create(produce);
+  consumerHandle = coroutine.create(consumer);
+  
+  coroutine.resume(consumerHandle);
+  ```

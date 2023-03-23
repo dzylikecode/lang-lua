@@ -69,14 +69,14 @@ print(son.name);
 
 ### 类的实例化
 
--  实现new一个对象
+- 实现new一个对象
   
   ```lua
   function obj:new(newobj)
-      newobj = newobj or {};
-      setmetatable(newobj,self);--继承
-      self.__index = self;   --自索引继承
-      return obj;            --返回实例
+     newobj = newobj or {};
+     setmetatable(newobj,self);--继承
+     self.__index = self;   --自索引继承
+     return obj;            --返回实例
   end
   ```
 
@@ -97,55 +97,52 @@ print(son.name);
   function father:sayfather()
       print("father",self.name,self.id);
   end
-  
-  
   local son = {}
-  setmetatable(son,father);
-  function son:sonsay()
-      print("sayson");
-  end
-  
+   setmetatable(son,father);
+   function son:sonsay()
+       print("sayson");
+   end
   
   setmetatable(son, father);
-  son:sonsay();
-  son:sayfather();
-  son:grandfathersay();
-  print(son.age); --123
+   son:sonsay();
+   son:sayfather();
+   son:grandfathersay();
+   print(son.age); --123
   ```
 
 ## 重写
 
 - 如果子类没有初始化（特化），则默认使用父类的值，且值和方法受父类的影响
-  
-  ```lua
-  ----------------------------------------------
-  --重写成员变量和方法
-  local obj0 = {age = 123};
-  --示例化对象，并且支持多继承
-  function obj0:new(obj)
-      obj = obj or {};
-      setmetatable(obj,self);--继承
-      self.__index = self;   --继承
-      return obj;            --返回实例
-  end
-  function obj0:rewrite()
-      print("obj0 rewrite");
-  end
-  
-  local obj2 = obj0:new();--此时继承了age = 123
-  --local obj1 = obj0:new({age = 123}); --重写了age成员变量，不会去obj0的__index方法找，因为自索引，也就是不会去obj0中找
-  function obj2:rewrite()
-      print("obj2 rewrite");
-  end
-  
-  local obj1 = obj0:new({age = 50});
-  
-  print(obj0.age);
-  print(obj1.age);
-  print("");
-  obj0:rewrite();
-  obj2:rewrite();
-  ```
+
+```lua
+----------------------------------------------
+--重写成员变量和方法
+local obj0 = {age = 123};
+--示例化对象，并且支持多继承
+function obj0:new(obj)
+    obj = obj or {};
+    setmetatable(obj,self);--继承
+    self.__index = self;   --继承
+    return obj;            --返回实例
+end
+function obj0:rewrite()
+    print("obj0 rewrite");
+end
+
+local obj2 = obj0:new();--此时继承了age = 123
+--local obj1 = obj0:new({age = 123}); --重写了age成员变量，不会去obj0的__index方法找，因为自索引，也就是不会去obj0中找
+function obj2:rewrite()
+    print("obj2 rewrite");
+end
+
+local obj1 = obj0:new({age = 50});
+
+print(obj0.age);
+print(obj1.age);
+print("");
+obj0:rewrite();
+obj2:rewrite();
+```
 
 ## 私有化
 
