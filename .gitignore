@@ -1,2 +1,6 @@
 .vscode/
 temp
+build
+.xmake
+*.out
+*.so
