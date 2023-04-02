@@ -26,7 +26,7 @@ $ make install
 #如果查找不到lua，需要将可执行文件的目录添加到环境变量中
 ```
 
-## lualocks安装
+## LuaRocks 安装
 
 参考：[LuaRocks - The Lua package manager](https://luarocks.org/)
 
