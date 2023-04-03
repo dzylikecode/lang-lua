@@ -76,7 +76,7 @@ print(son.name);
      newobj = newobj or {};
      setmetatable(newobj,self);--继承
      self.__index = self;   --自索引继承
-     return obj;            --返回实例
+     return newobj;            --返回实例
   end
   ```
 

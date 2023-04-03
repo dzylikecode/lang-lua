@@ -246,7 +246,3 @@ print(t2.id); --"12"
 ## 设置元表
 
 - `setmetatable(table, metatable)`返回值为table
-  
-  
-  
-  
